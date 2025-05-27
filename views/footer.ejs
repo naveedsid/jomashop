@@ -1,0 +1,38 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 2.4.18
+    </div>
+    <strong>Copyright &copy; 2024 <a href="#">Joma Shop</a>.</strong> All rights
+    reserved.
+</footer>
+<script src="assets/jquery/dist/jquery.min.js"></script>
+<script src="assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="assets/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<script src="assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="assets/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="assets/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+
+<script src="assets/fastclick/lib/fastclick.js"></script>
+<script src="assets/js/adminlte.min.js"></script>
+<script src="assets/js/pages/dashboard.js"></script>
+<script src="assets/js/demo.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dispensaryTable').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,295 @@
+<%- include('./header.ejs') %>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>JomaShop<small>Dashboard</small></h1>
+        </section>
+
+        <% if (data.spurl) { %>
+            <section class="content-header">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Product Saved in Database!</h4>
+                            <%= "https://www.jomashop.com/" + data.spurl+".html" %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <% } %>
+
+                <% if (data.bpsmsg) { %>
+                    <section class="content-header">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">×</button>
+                                    <h4><i class="icon fa fa-check"></i> Products Saved in Database!</h4>
+                                    <%= data.bpsmsg %>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+
+
+                        <!-- Main content -->
+                        <section class="content">
+                            <!-- Small boxes (Stat box) -->
+                            <div class="row">
+                                <div class="col-lg-3 col-xs-6">
+                                    <div class="small-box bg-aqua">
+                                        <div class="inner">
+                                            <h3>
+                                                <%= data.dbProductsCount %>
+                                            </h3>
+                                            <p>Scraped Products</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ion ion-bag"></i>
+                                        </div>
+                                        <a href="/products" class="small-box-footer">More info <i
+                                                class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+
+                                <!-- ./col -->
+                                <div class="col-lg-3 col-xs-6">
+                                    <!-- small box -->
+                                    <div class="small-box bg-red">
+                                        <div class="inner">
+                                            <h3>
+                                                <%= data.dbDuplicateProductCount %>
+                                            </h3>
+
+                                            <p>Duplicate Products</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ion ion-pie-graph"></i>
+                                        </div>
+                                        <a href="/fetch-products-description" class="small-box-footer">More info <i
+                                                class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xs-6">
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row">
+                                <section class="col-lg-12">
+                                    <div class="box box-success">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Scrape Filters</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h4>Single Product</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 30px;">
+                                                <form id="ScrapeSingleProduct">
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control input-lg" type="text" name="cname"
+                                                            id="singleproducturl"
+                                                            placeholder="URL of Single Product : https://www.jomashop.com/burberry-brown-gradient-pilot-ladies-sunglasses-be3128-110913-58.html"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input class="btn btn-primary btn-lg" type="submit"
+                                                            value="Start Scraping" style="width: 100%;">
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h4 style="margin-bottom: 0px;">Category Wise Products</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10">
+                                                    <div class="col-lg-4">
+                                                        <h4>Select Category</h4>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4>Start Page No</h4>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4>Ending Page No</h4>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <form id="ScrapeCategoryProducts">
+                                                    <div class="col-lg-10">
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <select id="txt_catid"
+                                                                        class="form-control input-lg">
+                                                                        <option value="10709">Sale (ID:10709)</option>
+                                                                        <option value="1661">Clearance (ID: 1661)
+                                                                        </option>
+                                                                        <option value="5695">Shop By Brand (ID: 5695)
+                                                                        </option>
+                                                                        <option value="17043">Men (ID: 17043)</option>
+                                                                        <option value="17045">Women (ID: 17045)</option>
+                                                                        <option value="871">Watches (ID: 871)</option>
+                                                                        <option value="31">Jewelery (ID: 31)</option>
+                                                                        <option value="46">Handbags (ID: 46)</option>
+                                                                        <option value="50">Sunglasses (ID: 50)</option>
+                                                                        <option value="5869">Fragrances & Beauty (ID:
+                                                                            5869)</option>
+                                                                        <option value="63">Clothing (ID: 63)</option>
+                                                                        <option value="5677">Shoes (ID: 5677)</option>
+                                                                        <option value="4621">Pre-owned (ID: 4621)
+                                                                        </option>
+                                                                        <option value="17587">Gifts (ID: 17587)</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <input class="form-control input-lg"
+                                                                    id="txt_startpageno" type="number" placeholder="5"
+                                                                    name="txt_startpageno">
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <input class="form-control input-lg"
+                                                                    id="txt_endingpageno" type="number" placeholder="9"
+                                                                    name="txt_startpageno">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input class="btn btn-primary btn-lg" type="submit"
+                                                            value="Start Scraping" style="width: 100%;">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+
+
+                                        <% if (data.scrapingstatus) { %>
+                                            <div class="overlay">
+                                                <i class="fa fa-refresh fa-spin"></i>
+                                            </div>
+                                            <% } %>
+
+
+
+                                    </div>
+                                </section>
+                            </div>
+
+
+
+                        </section>
+                        <!-- /.content-wrapper -->
+
+                        <section class="content-header status-text">
+                            <div id="statusBox" class="mt-3">
+                                <p></p>
+                            </div>
+                        </section>
+    </div>
+
+    <script>
+        document.getElementById("ScrapeSingleProduct").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const fullUrl = document.getElementById("singleproducturl").value.trim();
+
+            try {
+                let urlKey = fullUrl;
+                urlKey = urlKey.replace(/^https?:\/\//, '');
+                urlKey = urlKey.replace(/^www\./, '');
+                const parts = urlKey.split("jomashop.com/");
+                if (parts.length < 2) throw new Error("Invalid Jomashop URL");
+                urlKey = parts[1].replace(/\.html$/, '');
+                if (!urlKey) throw new Error("Could not extract urlKey");
+                window.location.href = `/scrape-single-product/${encodeURIComponent(urlKey)}`;
+            } catch (err) {
+                alert("Please enter a valid Jomashop product URL.");
+            }
+        });
+
+        document.getElementById("ScrapeCategoryProducts").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const txt_catid = document.getElementById("txt_catid").value.trim();
+            const txt_startpageno = document.getElementById("txt_startpageno").value.trim();
+            const txt_endingpageno = document.getElementById("txt_endingpageno").value.trim();
+            window.location.href = `/scrape-category-products/${encodeURIComponent(txt_catid)}/${encodeURIComponent(txt_startpageno)}/${encodeURIComponent(txt_endingpageno)}`;
+
+        });
+
+
+    </script>
+
+
+
+
+    <% if (data.scrapingstatus) { %>
+        <script>
+            const statusBox = document.getElementById('statusBox');
+
+            async function pollScrapingStatus() {
+                try {
+                    const res = await fetch('/scraping-status');
+                    const status = await res.json();
+
+                    if (status.done) {
+                        window.location.href = "/dashboard?bpsmsg=" + encodeURIComponent(status.message);
+                        return;
+                    }
+
+                    // Update live status
+                    statusBox.innerHTML = `
+    <div style="
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px 20px;
+        max-width: 320px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        color: #333;
+    ">
+        <h3 style="
+            margin-top: 0;
+            font-size: 18px;
+            color: #2c3e50;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 8px;
+        ">
+            Scraping Status
+        </h3>
+        <p style="margin: 6px 0;">📄 <strong>Page:</strong> ${status.currentPage} / ${status.totalPages}</p>
+        <p style="margin: 6px 0;">💾 <strong>Saved:</strong> ${status.savedCount}</p>
+        <p style="margin: 6px 0;">⚠ <strong>Duplicates:</strong> ${status.duplication}</p>
+    </div>
+`;
+
+                } catch (err) {
+                    console.error("Polling error:", err);
+                    statusBox.innerHTML = `<p style="color:red;">Error fetching status</p>`;
+                }
+
+                setTimeout(pollScrapingStatus, 5000); // poll again in 5 seconds
+            }
+
+            pollScrapingStatus();
+        </script>
+    <% } %>
+
+
+    <%- include('./footer.ejs') %>

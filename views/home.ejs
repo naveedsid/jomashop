@@ -1,0 +1,88 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process Starter</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <style>
+    body {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-5">Start Process</h1>
+    <form action="/start" method="post" class="mb-4">
+      <div class="row">
+        <div class="col-sm-3">
+          <label for="param1">Parameter 1:</label>
+          <input type="text" class="form-control" id="param1" name="param1" required>
+        </div>
+        
+        <div class="col-sm-3">
+          <label for="param2">Parameter 2:</label>
+          <input type="text" class="form-control" id="param2" name="param2" required>
+        </div>
+        
+        <div class="col-sm-3">
+          <label for="param3">Parameter 3:</label>
+          <input type="text" class="form-control" id="param3" name="param3" required>
+        </div>
+        
+        <div class="col-sm-3">
+          <label for="param4">Parameter 4:</label>
+          <input type="text" class="form-control" id="param4" name="param4" required>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col">
+          <button type="submit" class="btn btn-primary btn-block">Start Process</button>
+        </div>
+      </div>
+    </form>
+    
+    <div id="data-container">
+      <!-- Data from the database will be displayed here -->
+    </div>
+  </div>
+
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // Function to fetch data and update the DOM
+    function fetchData() {
+      $.ajax({
+        url: '/fetch-data',
+        method: 'GET',
+        success: function(data) {
+          // Clear the existing data
+          $('#data-container').empty();
+
+          // Append the new data
+          data.forEach(function(dispensary) {
+            $('#data-container').append('<p>' + dispensary.name + '</p>');
+          });
+        },
+        error: function(err) {
+          console.error('Error fetching data:', err);
+        }
+      });
+    }
+
+    // Fetch data every 2 seconds
+    setInterval(fetchData, 2000);
+    
+    // Fetch data when the page loads
+    $(document).ready(fetchData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<%- include('./header.ejs') %>
+
+    <div class="content-wrapper">
+        <section class="content-header" style="float: left;">
+            <h1>JomaShop</h1>
+        </section>
+
+        <section class="content-header" style="float: right;">
+            <form id="rangeForm" method="GET" action="/products" class="form-inline mb-3" style="margin-bottom: 20px;">
+                <label for="from" style="margin-right: 10px;">From:</label>
+                <input type="number" id="from" name="from" class="form-control" placeholder="1" required min="1" value="<%= range?.from || '' %>"
+                    style="margin-right: 20px;">
+
+                <label for="to" style="margin-right: 10px;">To:</label>
+                <input type="number" id="to" name="to" class="form-control" required min="1" placeholder="<%= totalProducts ? totalProducts : '' %>" value="<%= range?.to || '' %>"
+                    style="margin-right: 20px;">
+
+                <button type="submit" class="btn btn-primary">Load Product</button>
+            </form>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Products</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <table id="dispensaryTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr #</th>
+                                        <th>Product ID</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Brand Name</th>
+                                        <th>Stock Status</th>
+                                        <th>urlKey</th>
+                                        <th>Price</th>
+                                        <th>Product Description</th>
+                                        <th>Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let index=1; %>
+                                        <% for (let product of productsData) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= index %>
+                                                </td>
+                                                <td>
+                                                    <%= product.id %>
+                                                </td>
+                                                <td>
+                                                    <%= product.name %>
+                                                </td>
+                                                <td>
+                                                    <%= product.department %>
+                                                </td>
+                                                <td>
+                                                    <%= product.brandName %>
+                                                </td>
+                                                <td>
+                                                    <%= product.stockStatus %>
+                                                </td>
+                                                <td>
+                                                    <%= product.urlKey %>
+                                                </td>
+                                                <td style="font-size: 16px; font-weight: bold;">
+                                                    <%= product.pricing.retailPrice.currency==="USD" ? "$ " :
+                                                        product.pricing.retailPrice.currency %>
+                                                        <%= product.pricing.retailPrice.value %>
+                                                </td>
+                                                <td>
+                                                    <%= product.description.complete %>
+                                                </td>
+                                                <td><img src="<%= product.productImages[0] %>" alt=""
+                                                        style="width: 100px;"></td>
+                                            </tr>
+                                            <% index++; %>
+                                                <% } %>
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <%- include('./footer.ejs') %>
+
+        <script>
+            // Function to format date string to YYYY-MM-DD format
+            function formaDateString(dateString) {
+                // const date = new Date(dateString);
+                // return date.toISOString().split('T')[0];
+                console.log(dateString);
+            }
+
+            // Function to truncate text to a specified length
+            function truncateText(text, maxLength) {
+                if (text.length > maxLength) {
+                    return text.substring(0, maxLength) + '...';
+                }
+                return text;
+            }
+        </script>
