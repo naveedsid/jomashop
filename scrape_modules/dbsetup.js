@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 
+
+
 async function connectDB() {
-    await mongoose.connect('mongodb://localhost:27017/jomashop');
+    await mongoose.connect('mongodb+srv://naveedsiddiqui5589:Pakistan1947@@democluster.tl7t706.mongodb.net/?retryWrites=true&w=majority&appName=democluster');
     
     console.log("Connection Successful");
 }
