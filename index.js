@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
 
-// const { connectDB, Product, closeDB } = require('./scrape_modules/dbsetup');
+const { connectDB, Product, closeDB } = require('./scrape_modules/dbsetup');
 const { getSingleProductDetail } = require('./scrape_modules/getSingleProductDetail');
 const { getSingleCatProductList } = require('./scrape_modules/getSingleCatProductList');
 
@@ -26,16 +26,23 @@ app.use(bodyParser.json());
 
 
 let scrapingStatus = {
-  done: false,
-  message: "",
-  currentPage: 0,
-  totalPages: 0,
-  savedCount: 0,
-  duplication: 0
+    done: false,
+    message: "",
+    currentPage: 0,
+    totalPages: 0,
+    savedCount: 0,
+    duplication: 0
 };
 
 app.get("/jomashop", async (req, res) => {
-    res.render("dashboard_")
+    // res.render("dashboard_")
+    try {
+        connectDB();
+        res.send("Connected");
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send(error);
+    }
 });
 
 app.get("/dashboard", async (req, res) => {
@@ -69,7 +76,7 @@ app.get("/dashboard", async (req, res) => {
         res.render("dashboard", { data });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send("Internal Server Error");
     }
 });
 
@@ -80,14 +87,14 @@ app.get("/dashboard", async (req, res) => {
 app.get("/products", async (req, res) => {
     try {
 
-        const from = parseInt(req.query.from) || 1; 
+        const from = parseInt(req.query.from) || 1;
         const to = parseInt(req.query.to) || 50;
 
         const totalProducts = await Product.countDocuments();
 
         const productsData = await Product.find().skip(from - 1).limit(to - from + 1)
         // console.log(productsData);
-        
+
         res.render("products", {
             productsData,
             totalProducts: totalProducts,
@@ -249,7 +256,7 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, 
 
 
 app.get("/scraping-status", (req, res) => {
-  res.json(scrapingStatus);
+    res.json(scrapingStatus);
 });
 
 
