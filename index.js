@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
 
-const { connectDB, Product, closeDB } = require('./scrape_modules/dbsetup');
+// const { connectDB, Product, closeDB } = require('./scrape_modules/dbsetup');
 const { getSingleProductDetail } = require('./scrape_modules/getSingleProductDetail');
 const { getSingleCatProductList } = require('./scrape_modules/getSingleCatProductList');
 
@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-connectDB();
+// connectDB();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -34,7 +34,9 @@ let scrapingStatus = {
   duplication: 0
 };
 
-
+app.get("/jomashop", async (req, res) => {
+    res.render("home")
+});
 
 app.get("/dashboard", async (req, res) => {
     try {
