@@ -35,7 +35,7 @@ let scrapingStatus = {
 };
 
 app.get("/jomashop", async (req, res) => {
-    res.render("home")
+    res.render("dashboard")
 });
 
 app.get("/dashboard", async (req, res) => {
