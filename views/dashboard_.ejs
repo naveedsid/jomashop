@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </section>
-            <% } %>
+
 
 
                     <section class="content-header">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </section>
-                    <% } %>
+
 
 
 
@@ -200,93 +200,6 @@
                         </section>
     </div>
 
-    <script>
-        document.getElementById("ScrapeSingleProduct").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const fullUrl = document.getElementById("singleproducturl").value.trim();
-
-            try {
-                let urlKey = fullUrl;
-                urlKey = urlKey.replace(/^https?:\/\//, '');
-                urlKey = urlKey.replace(/^www\./, '');
-                const parts = urlKey.split("jomashop.com/");
-                if (parts.length < 2) throw new Error("Invalid Jomashop URL");
-                urlKey = parts[1].replace(/\.html$/, '');
-                if (!urlKey) throw new Error("Could not extract urlKey");
-                window.location.href = `/scrape-single-product/${encodeURIComponent(urlKey)}`;
-            } catch (err) {
-                alert("Please enter a valid Jomashop product URL.");
-            }
-        });
-
-        document.getElementById("ScrapeCategoryProducts").addEventListener("submit", function (e) {
-            e.preventDefault();
-            const txt_catid = document.getElementById("txt_catid").value.trim();
-            const txt_startpageno = document.getElementById("txt_startpageno").value.trim();
-            const txt_endingpageno = document.getElementById("txt_endingpageno").value.trim();
-            window.location.href = `/scrape-category-products/${encodeURIComponent(txt_catid)}/${encodeURIComponent(txt_startpageno)}/${encodeURIComponent(txt_endingpageno)}`;
-
-        });
-
-
-    </script>
-
-
-
-
-    <% if (data.scrapingstatus) { %>
-        <script>
-            const statusBox = document.getElementById('statusBox');
-
-            async function pollScrapingStatus() {
-                try {
-                    const res = await fetch('/scraping-status');
-                    const status = await res.json();
-
-                    if (status.done) {
-                        window.location.href = "/dashboard?bpsmsg=" + encodeURIComponent(status.message);
-                        return;
-                    }
-
-                    // Update live status
-                    statusBox.innerHTML = `
-    <div style="
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 16px 20px;
-        max-width: 320px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        color: #333;
-    ">
-        <h3 style="
-            margin-top: 0;
-            font-size: 18px;
-            color: #2c3e50;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 8px;
-        ">
-            Scraping Status
-        </h3>
-        <p style="margin: 6px 0;">📄 <strong>Page:</strong> ${status.currentPage} / ${status.totalPages}</p>
-        <p style="margin: 6px 0;">💾 <strong>Saved:</strong> ${status.savedCount}</p>
-        <p style="margin: 6px 0;">⚠ <strong>Duplicates:</strong> ${status.duplication}</p>
-    </div>
-`;
-
-                } catch (err) {
-                    console.error("Polling error:", err);
-                    statusBox.innerHTML = `<p style="color:red;">Error fetching status</p>`;
-                }
-
-                setTimeout(pollScrapingStatus, 5000); // poll again in 5 seconds
-            }
-
-            pollScrapingStatus();
-        </script>
-    <% } %>
 
 
     <%- include('./footer.ejs') %>
