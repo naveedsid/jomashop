@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 
 
 async function connectDB() {
-    await mongoose.connect('mongodb+srv://naveedsiddiqui5589:Pakistan1947@@democluster.tl7t706.mongodb.net/?retryWrites=true&w=majority&appName=democluster');
+    await mongoose.connect('mongodb+srv://naveedsiddiqui5589:Pakistan1947_@democluster.tl7t706.mongodb.net/?retryWrites=true&w=majority&appName=democluster');
     
     console.log("Connection Successful");
 }

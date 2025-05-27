@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-// connectDB();
+connectDB();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -34,16 +34,7 @@ let scrapingStatus = {
     duplication: 0
 };
 
-app.get("/jomashop", async (req, res) => {
-    // res.render("dashboard_")
-    try {
-        connectDB();
-        res.send("Connected");
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send(error);
-    }
-});
+
 
 app.get("/dashboard", async (req, res) => {
     try {
