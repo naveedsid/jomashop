@@ -38,6 +38,18 @@ let scrapingStatus = {
 
 app.get("/dashboard", async (req, res) => {
     try {
+
+        if (req.query.bpsmsg) {
+            scrapingStatus = {
+        done: false,
+        message: "",
+        currentPage: 0,
+        totalPages: 0,
+        savedCount: 0,
+        duplication: 0
+    };
+        }
+
         const dbProductsCount = await Product.countDocuments({});
         const count = await Product.aggregate([
             {
@@ -151,7 +163,6 @@ app.get("/scrape-single-product/:urlkey", async (req, res) => {
 //----- Scrape Whole Category Products ------
 app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, res) => {
     try {
-        // await connectDB();
 
         const dbProductsCount = await Product.countDocuments({});
         const count = await Product.aggregate([

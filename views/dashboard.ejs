@@ -248,10 +248,14 @@
                     const status = await res.json();
 
                     if (status.done) {
+                        
                         window.location.href = "/dashboard?bpsmsg=" + encodeURIComponent(status.message);
+
                         return;
                     }
 
+
+                    // scrapingStatus.done = false;
                     // Update live status
                     statusBox.innerHTML = `
     <div style="
