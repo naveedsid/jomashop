@@ -18,7 +18,7 @@ async function getSingleProductDetail(product_uri) {
 
     const product = {
         urlKey: product_uri,
-        hash: "44345d9cd3d3d2026a93e0aeebfbbb644254b4db23f052e20c789f033fe511fe"
+        hash: "99e48d307bcd7c2d640eeda705ccdf6cd1086de1bf091df7e759a417ea45ae04" 
     };
 
 
@@ -91,7 +91,7 @@ async function getSingleProductDetail(product_uri) {
 
 
     };
-    // console.log(productDetails);
+    console.log(productDetails);
     return productDetails;
 
 
@@ -100,9 +100,9 @@ async function getSingleProductDetail(product_uri) {
 module.exports = { getSingleProductDetail };
 
 
-// getSingleProduct("tresorra-14k-yellow-gold-elephant-pendant-necklace-67469");
+// getSingleProductDetail("tresorra-14k-yellow-gold-elephant-pendant-necklace-67469");
 // getSingleProductDetail("pre-owned-cartier-love-bracelet-white-gold-144212");
-// getSingleProductDetail("pre-owned-van-cleef-arpels-rose-gold-sapphire-and-diamond-two-butterfly-pendant-145706");
+getSingleProductDetail("montblanc-john-f-kennedy-special-edition-ballpoint-pen");
 
 
 
