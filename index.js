@@ -271,7 +271,7 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", checkAuth, a
             scrapingstatus: true
         };
 
-        res.render("dashboard", { data });
+        res.render("dashboard", { data, username: req.session.username });
         // return "";
 
         const catid = req.params.catid;
