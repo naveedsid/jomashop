@@ -143,6 +143,7 @@ app.get("/dashboard", checkAuth, async (req, res) => {
             dbProductsCount: dbProductsCount,
             dbDuplicateProductCount: count[0]?.duplicateCount || 0,
             spurl: req.query.spurl || null,
+            spdurl: req.query.spdurl || null,
             bpsmsg: req.query.bpsmsg || null,
             scrapingstatus: false
         };
@@ -193,31 +194,14 @@ app.get("/products", checkAuth, async (req, res) => {
 app.get("/scrape-single-product/:urlkey", checkAuth, async (req, res) => {
     try {
 
-        // const dbProductsCount = await Product.countDocuments({});
-        // const count = await Product.aggregate([
-        //     {
-        //         $group: {
-        //             _id: "$urlKey",
-        //             count: { $sum: 1 }
-        //         }
-        //     },
-        //     {
-        //         $match: {
-        //             count: { $gt: 1 }
-        //         }
-        //     },
-        //     {
-        //         $count: "duplicateCount"
-        //     }
-        // ]);
-
-        // const data = {
-        //     dbProductsCount: dbProductsCount,
-        //     dbDuplicateProductCount: count[0]?.duplicateCount || 0
-        // };
-
 
         const scraped_single_product = await getSingleProductDetail(req.params.urlkey);
+
+        const existingProduct = await Product.findOne({ urlKey: scraped_single_product.urlKey });
+        if (existingProduct) {
+            console.log(`Duplicate Found: ${scraped_single_product.urlKey}`);
+            return res.redirect('/dashboard?spdurl=' + encodeURIComponent(scraped_single_product.urlKey));
+        } 
 
         const singleProduct = new Product(scraped_single_product);
         await singleProduct.save();

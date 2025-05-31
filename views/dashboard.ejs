@@ -4,6 +4,20 @@
             <h1>JomaShop<small>Dashboard</small></h1>
         </section>
 
+        <% if (data.spdurl) { %>
+            <section class="content-header">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Product is Already in Database!</h4>
+                            <%= "https://www.jomashop.com/" + data.spdurl+".html" %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <% } %>
+
         <% if (data.spurl) { %>
             <section class="content-header">
                 <div class="row">
