@@ -36,19 +36,31 @@ let scrapingStatus = {
 };
 
 
+let currentScrapeJob = {
+    isRunning: false,
+    catId: null,
+    startPage: null,
+    endPage: null
+};
+
 
 app.get("/dashboard", async (req, res) => {
     try {
 
+        if (currentScrapeJob.isRunning) {
+            return res.redirect(`/scrape-category-products/${currentScrapeJob.catId}/${currentScrapeJob.startPage}/${currentScrapeJob.endPage}`);
+        }
+
+
         if (req.query.bpsmsg) {
             scrapingStatus = {
-        done: false,
-        message: "",
-        currentPage: 0,
-        totalPages: 0,
-        savedCount: 0,
-        duplication: 0
-    };
+                done: false,
+                message: "",
+                currentPage: 0,
+                totalPages: 0,
+                savedCount: 0,
+                duplication: 0
+            };
         }
 
         const dbProductsCount = await Product.countDocuments({});
@@ -167,7 +179,14 @@ app.get("/scrape-single-product/:urlkey", async (req, res) => {
 //----- Scrape Whole Category Products ------
 app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, res) => {
     try {
-        
+
+        currentScrapeJob = {
+            isRunning: true,
+            catId: req.params.catid,
+            startPage: req.params.startpageno,
+            endPage: req.params.endpageno
+        };
+
         shouldStopScraping = false;
 
         const dbProductsCount = await Product.countDocuments({});
@@ -256,6 +275,7 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, 
 
         scrapingStatus.done = true;
         scrapingStatus.message = productcounter + " Products has saved to Database...!";
+        currentScrapeJob.isRunning = false;
         // res.redirect('/dashboard?bpsmsg=' + encodeURIComponent(productcounter) + ' Products has been saved to Database..!');
 
     } catch (error) {
