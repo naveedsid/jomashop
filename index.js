@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const { connectDB, Product, closeDB } = require('./scrape_modules/dbsetup');
 const { getSingleProductDetail } = require('./scrape_modules/getSingleProductDetail');
 const { getSingleCatProductList } = require('./scrape_modules/getSingleCatProductList');
-
+const session = require('express-session');
 const path = require("path");
 const bodyParser = require('body-parser');
 
@@ -23,6 +23,15 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+
+
+app.use(session({
+    secret: 'jomashop-secret-key', // you can change this
+    resave: false,
+    saveUninitialized: true
+}));
 
 let shouldStopScraping = false;
 
@@ -44,7 +53,56 @@ let currentScrapeJob = {
 };
 
 
-app.get("/dashboard", async (req, res) => {
+function checkAuth(req, res, next) {
+    if (req.session.isAuthenticated) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
+
+
+
+
+app.post('/auth', (req, res) => {
+    const { username, password } = req.body;
+
+    const users = {
+        'admin': '12345678',
+        'asad': 'password123',
+        'noman': 'letmein',
+    };
+
+    if (users[username] && users[username] === password) {
+        req.session.isAuthenticated = true;
+        req.session.username = username;
+        res.redirect('/dashboard');
+    } else {
+        res.send(`
+            <script>
+                alert("Username or Password is Invalid..! :(");
+                window.location.href = "/login";
+            </script>
+        `);
+    }
+});
+
+
+
+app.get("/login", async (req, res) => {
+    res.render("login");
+});
+
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
+
+
+app.get("/dashboard", checkAuth, async (req, res) => {
     try {
 
         if (currentScrapeJob.isRunning) {
@@ -89,7 +147,7 @@ app.get("/dashboard", async (req, res) => {
             scrapingstatus: false
         };
 
-        res.render("dashboard", { data });
+        res.render("dashboard", { data, username: req.session.username });
     } catch (error) {
         console.error('Error:', error);
         return;
@@ -101,7 +159,7 @@ app.get("/dashboard", async (req, res) => {
 
 
 
-app.get("/products", async (req, res) => {
+app.get("/products", checkAuth, async (req, res) => {
     try {
 
         const from = parseInt(req.query.from) || 1;
@@ -131,7 +189,7 @@ app.get("/products", async (req, res) => {
 
 
 //----- Scrape Single Product ------
-app.get("/scrape-single-product/:urlkey", async (req, res) => {
+app.get("/scrape-single-product/:urlkey", checkAuth, async (req, res) => {
     try {
 
         // const dbProductsCount = await Product.countDocuments({});
@@ -177,7 +235,7 @@ app.get("/scrape-single-product/:urlkey", async (req, res) => {
 
 
 //----- Scrape Whole Category Products ------
-app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, res) => {
+app.get("/scrape-category-products/:catid/:startpageno/:endpageno", checkAuth, async (req, res) => {
     try {
 
         currentScrapeJob = {
@@ -287,12 +345,12 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, 
 });
 
 
-app.get("/scraping-status", (req, res) => {
+app.get("/scraping-status", checkAuth, (req, res) => {
     res.json(scrapingStatus);
 });
 
 
-app.post('/stop-scraping', (req, res) => {
+app.post('/stop-scraping', checkAuth, (req, res) => {
     shouldStopScraping = true;
     res.json({ success: true, message: 'Scraping will stop shortly.' });
 });
