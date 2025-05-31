@@ -150,8 +150,8 @@ app.get("/dashboard", checkAuth, async (req, res) => {
         res.render("dashboard", { data, username: req.session.username });
     } catch (error) {
         console.error('Error:', error);
-        return;
         res.status(500).send(error);
+        return;
     }
 });
 
@@ -173,7 +173,8 @@ app.get("/products", checkAuth, async (req, res) => {
         res.render("products", {
             productsData,
             totalProducts: totalProducts,
-            range: { from, to }
+            range: { from, to },
+            username: req.session.username
         });
 
         // const productsData = await Product.find({});
@@ -181,8 +182,8 @@ app.get("/products", checkAuth, async (req, res) => {
         // res.render("products", { productsData });
     } catch (error) {
         console.error('Error:', error);
-        return;
         res.status(500).send('Internal Server Error');
+        return;
     }
 });
 
