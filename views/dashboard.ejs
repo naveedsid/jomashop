@@ -69,7 +69,7 @@
                                         <div class="icon">
                                             <i class="ion ion-pie-graph"></i>
                                         </div>
-                                        <a href="/fetch-products-description" class="small-box-footer">More info <i
+                                        <a href="#" class="small-box-footer">More info <i
                                                 class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
@@ -176,6 +176,7 @@
                                                 </form>
                                             </div>
                                         </div>
+
                                         <!-- /.box-body -->
 
 
@@ -196,10 +197,31 @@
                         </section>
                         <!-- /.content-wrapper -->
 
+
                         <section class="content-header status-text">
                             <div id="statusBox" class="mt-3">
                                 <p></p>
                             </div>
+                            <% if (data.scrapingstatus) { %>
+                                <div style="margin: 20px 0;">
+                                    <button id="stopScrapingBtn" class="btn btn-danger btn-lg"
+                                        style="padding-left: 20px; padding-right: 20px;">Stop Scraping</button>
+                                </div>
+                                <% } %>
+                                    <script>
+                                        document.getElementById("stopScrapingBtn").addEventListener("click", async () => {
+                                            const confirmed = confirm("Are you sure you want to stop scraping?");
+                                            if (!confirmed) return;
+
+                                            try {
+                                                const res = await fetch("/stop-scraping", { method: "POST" });
+                                                const result = await res.json();
+                                                alert(result.message);
+                                            } catch (err) {
+                                                alert("Failed to stop scraping.");
+                                            }
+                                        });
+                                    </script>
                         </section>
     </div>
 
@@ -233,12 +255,18 @@
         });
 
 
+
+
     </script>
 
 
 
 
+
     <% if (data.scrapingstatus) { %>
+
+
+
         <script>
             const statusBox = document.getElementById('statusBox');
 
@@ -248,7 +276,7 @@
                     const status = await res.json();
 
                     if (status.done) {
-                        
+
                         window.location.href = "/dashboard?bpsmsg=" + encodeURIComponent(status.message);
 
                         return;
@@ -281,6 +309,7 @@
         <p style="margin: 6px 0;">💾 <strong>Saved:</strong> ${status.savedCount}</p>
         <p style="margin: 6px 0;">⚠ <strong>Duplicates:</strong> ${status.duplication}</p>
     </div>
+    
 `;
 
                 } catch (err) {
@@ -288,12 +317,12 @@
                     statusBox.innerHTML = `<p style="color:red;">Error fetching status</p>`;
                 }
 
-                setTimeout(pollScrapingStatus, 2000); // poll again in 5 seconds
+                setTimeout(pollScrapingStatus, 1000); // poll again in 5 seconds
             }
 
             pollScrapingStatus();
         </script>
-    <% } %>
 
+        <% } %>
 
-    <%- include('./footer.ejs') %>
+            <%- include('./footer.ejs') %>

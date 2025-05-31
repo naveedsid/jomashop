@@ -91,7 +91,7 @@ async function getSingleProductDetail(product_uri) {
 
 
     };
-    console.log(productDetails);
+    // console.log(productDetails);
     return productDetails;
 
 

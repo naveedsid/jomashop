@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+let shouldStopScraping = false;
 
 let scrapingStatus = {
     done: false,
@@ -79,6 +80,7 @@ app.get("/dashboard", async (req, res) => {
         res.render("dashboard", { data });
     } catch (error) {
         console.error('Error:', error);
+        return;
         res.status(500).send(error);
     }
 });
@@ -109,6 +111,7 @@ app.get("/products", async (req, res) => {
         // res.render("products", { productsData });
     } catch (error) {
         console.error('Error:', error);
+        return;
         res.status(500).send('Internal Server Error');
     }
 });
@@ -151,6 +154,7 @@ app.get("/scrape-single-product/:urlkey", async (req, res) => {
 
     } catch (error) {
         console.error('Error:', error);
+        return;
         res.status(500).send('Internal Server Error');
     }
 });
@@ -163,6 +167,8 @@ app.get("/scrape-single-product/:urlkey", async (req, res) => {
 //----- Scrape Whole Category Products ------
 app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, res) => {
     try {
+        
+        shouldStopScraping = false;
 
         const dbProductsCount = await Product.countDocuments({});
         const count = await Product.aggregate([
@@ -216,10 +222,13 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, 
                 return;
             }
 
+            if (shouldStopScraping) break;
+
             const catProductList = await getSingleCatProductList(catid, pagenocounter);
             console.log(catProductList);
 
             for (const urlKey of catProductList[0]) {
+                if (shouldStopScraping) break;
                 try {
                     const productData = await getSingleProductDetail(urlKey);
 
@@ -251,6 +260,7 @@ app.get("/scrape-category-products/:catid/:startpageno/:endpageno", async (req, 
 
     } catch (error) {
         console.error('Error:', error);
+        // return;
         res.status(500).send('Internal Server Error');
     }
     //     finally { await closeDB(); }
@@ -261,5 +271,10 @@ app.get("/scraping-status", (req, res) => {
     res.json(scrapingStatus);
 });
 
+
+app.post('/stop-scraping', (req, res) => {
+    shouldStopScraping = true;
+    res.json({ success: true, message: 'Scraping will stop shortly.' });
+});
 
 module.exports = app;

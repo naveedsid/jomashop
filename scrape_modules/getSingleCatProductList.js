@@ -75,7 +75,7 @@ async function getSingleCatProductList(categoryId, currentPage = 1, categoryName
         const urlKeysArray = items.map(product => product.url_key);
         singleCatProductListWPageInfo.push(urlKeysArray);
         singleCatProductListWPageInfo.push(response.data.data.products.page_info);
-        // console.log(singleCatProductListWPageInfo);
+        console.log(singleCatProductListWPageInfo);
         return singleCatProductListWPageInfo;
 
     } catch (error) {
@@ -85,4 +85,4 @@ async function getSingleCatProductList(categoryId, currentPage = 1, categoryName
 
 module.exports = { getSingleCatProductList};
 
-// getSingleCatProductList(17045,3);
+getSingleCatProductList(17045,3);
